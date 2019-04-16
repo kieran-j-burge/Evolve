@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="fragments :: head"></head>
+<body>
+<nav th:replace="fragments :: navigation"></nav>
+<div class="container">
+    <div class="row">
+        <div class="offset-4"></div>
+        <form id="signUpForm" method="post" class="evolve-form col-md-4" onsubmit="return validateForm();" action="#" th:action="@{/signup}" th:object="${signupForm}">
+            <div class="form-group">
+                <label for="name">Company Name</label>
+                <input type="text" class="form-control" name="name" id="name" placeholder="Enter company name"/>
+                <span class="help-block invalid-feedback" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"
+                      style="display: block;"></span>
+            </div>
+            <div class="form-group">
+                <label for="email">E-mail</label>
+                <input type="email" class="form-control" name="email" id="email" placeholder="Enter email"/>
+                <span class="help-block invalid-feedback" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"
+                      style="display: block;"></span>
+                <span class="help-block invalid-feedback" th:if="${error != null}" th:text="${error}"
+                      style="display: block;"></span>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" class="form-control" name="password" id="password" placeholder="Enter password"/>
+                <span class="help-block invalid-feedback" th:if="${#fields.hasErrors('password')}"
+                      th:errors="*{password}" style="display: block;"></span>
+            </div>
+            <button type="submit" class="btn btn-primary form-control" value="login">Register</button>
+        </form>
+
+        <div class="container">
+            <div class="col-md-4 password-help-container">
+                <ul>
+                    <li id="lengthLi">Your password must be at least 10 characters</li>
+                    <li id="upperCaseLi">You need to add 1 upper case letter</li>
+                    <li id="lowerCaseLi">You need to add 1 lower case letter</li>
+                    <li id="numberLi">You need to add 1 number</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+
+<script>
+    // $(document).ready(function() {
+
+        function validateForm() {
+            var upperCase= new RegExp('[A-Z]');
+            var lowerCase= new RegExp('[a-z]');
+            var numbers = new RegExp('[0-9]');
+
+            var upperCasePresent = false;
+            var lowerCasePresent = false;
+            var numberPresent = false;
+
+            var password = $("#password").val();
+
+            if(password.length >= 10){
+                if(password.match(upperCase)) {
+                    if(password.match(lowerCase)){
+                        if(password.match(numbers)){
+                            return true;
+                        }
+                    }
+                }
+            }
+
+
+            else {
+                if(password.length >= 10) {
+                    upperCasePresent = true;
+                    $('#lengthLi').hide();
+                }
+                else{
+                    $('#lengthLi').show();
+                }
+
+                if(password.match(upperCase)) {
+                    upperCasePresent = true;
+                    $('#upperCaseLi').hide();
+                }
+                else{
+                    $('#upperCaseLi').show();
+                }
+
+                if(password.match(lowerCase)){
+                    lowerCasePresent = true;
+                    $('#lowerCaseLi').hide();
+                }
+                else{
+                    lowerCasePresent = false
+                    $('#lowerCaseLi').show();
+                }
+
+                if(password.match(numbers)){
+                    numberPresent = true
+                    $('#numberLi').hide();
+                }
+                else{
+                    numberPresent = false
+                    $('#numberLi').show();
+                }
+
+                $('.password-help-container').show();
+                return false;
+            }
+        }
+
+
+    // });
+
+</script>
+
+</html>
+
+
+
+
+
